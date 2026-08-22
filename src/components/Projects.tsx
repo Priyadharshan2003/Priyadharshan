@@ -21,8 +21,8 @@ interface Project {
 const PROJECTS: Project[] = [
   // --- AGENTIC AI SAAS PROJECTS ---
   {
-    id: 'sapient-ai-agent',
-    title: 'SapientAI — Autonomous SAP BTP Multi-Agent Orchestrator',
+    id: 'nexus-agent',
+    title: 'Nexus Agent — Autonomous SAP BTP Multi-Agent Orchestrator',
     badge: 'Trending Agentic AI SaaS',
     category: 'Agentic AI SaaS',
     subtitle: 'Multi-Agent Autonomous ERP Workflow Engine',
