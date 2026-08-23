@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-resume": "tsx scripts/generate-pdfs.ts",
+    "prepare": "husky"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -23,8 +25,18 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.3.0",
     "oxlint": "^1.75.0",
+    "puppeteer": "^25.8.0",
+    "tsx": "^4.23.12",
     "typescript": "~6.0.2",
     "vite": "^8.2.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "oxlint",
+      "tsc --noEmit"
+    ]
   }
 }

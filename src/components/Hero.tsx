@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { ArrowRight, FileText, ShieldCheck } from 'lucide-react';
-import { SapArchitectureCanvas } from './SapArchitectureCanvas';
+
+const SapArchitectureCanvas = React.lazy(() => import('./SapArchitectureCanvas').then(module => ({ default: module.SapArchitectureCanvas })));
 import { LinkedinIcon, GithubIcon, FigmaIcon } from './Icons';
 
 interface HeroProps {
@@ -92,6 +93,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
                   href="https://www.linkedin.com/in/priyadharshan-chandranath"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="LinkedIn Profile"
                   className="p-3 rounded-xl text-[#94a3b8] hover:text-white bg-[#0f121a] hover:bg-[#181c26] border border-white/10 transition-all"
                   title="LinkedIn"
                 >
@@ -102,6 +104,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
                   href="https://github.com/priyadharshan2003"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="GitHub Profile"
                   className="p-3 rounded-xl text-[#94a3b8] hover:text-white bg-[#0f121a] hover:bg-[#181c26] border border-white/10 transition-all"
                   title="GitHub"
                 >
@@ -112,6 +115,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
                   href="https://www.figma.com/@prichan_uiux"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Figma Profile"
                   className="p-3 rounded-xl text-[#94a3b8] hover:text-white bg-[#0f121a] hover:bg-[#181c26] border border-white/10 transition-all"
                   title="Figma"
                 >
@@ -136,7 +140,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenResume }) => {
           {/* Right Column: 1 Single Elegant Floating 3D SAP Architecture Mesh */}
           <div className="lg:col-span-5 relative">
             <div className="glass-panel p-2 rounded-2xl border border-white/10 shadow-2xl relative">
-              <SapArchitectureCanvas />
+              <Suspense fallback={<div className="animate-pulse bg-white/5 rounded-2xl w-full h-[400px]"></div>}>
+                <SapArchitectureCanvas />
+              </Suspense>
             </div>
           </div>
 
