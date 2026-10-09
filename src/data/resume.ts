@@ -71,19 +71,17 @@ export const RESUME_DATA = {
     {
       role: 'Open Source Contributor',
       project: 'DeepFirstHQ (deepfirstsearch)',
-      period: '2026',
+      period: '',
       points: [
-        'Contributed and merged 2 feature enhancements into the DeepFirstHQ deepfirstsearch open-source project. Implemented merchant-specific authorization timeout support in the Agent Pay SDK and MCP integration.',
-        'Added validation rules for configurable timeout ranges (10 to 86,400 seconds), reusable timeout handling utilities, automated test coverage, and documentation updates.',
-        'Worked through the complete open-source contribution lifecycle including issue analysis, implementation, code review, CI/CD validation, maintainer approval, and production release.',
-        `Contributions were merged into the main branch and included in official releases:
-        <table>
-          <tr><th>PR</th><th>Description</th></tr>
-          <tr><td><a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/21">#21</a></td><td>feat(sdk): add merchant-specific maxTimeoutSeconds support</td></tr>
-          <tr><td><a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/29">#29</a></td><td>feat(mcp): support merchant-specific authorization timeouts</td></tr>
-        </table>`
+        'Merged 2 feature contributions into the DeepFirstHQ open-source payment infrastructure platform.',
+        'Implemented merchant-specific authorization timeout support across SDK and MCP components.',
+        'Added validation, automated tests, documentation, and integration enhancements.',
+        'Collaborated with maintainers through code reviews and CI/CD pipelines to deliver production-ready releases.',
+        `Contributions shipped in official releases:<br/>
+        &nbsp;&nbsp;- <a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/21">PR #21</a>: SDK support for merchant-specific maxTimeoutSeconds<br/>
+        &nbsp;&nbsp;- <a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/29">PR #29</a>: MCP integration for merchant-specific authorization timeouts`
       ],
-      technologies: 'TypeScript, Node.js, Git, GitHub, CI/CD, Unit Testing, Open Source Development'
+      technologies: 'TypeScript | Node.js | GitHub | CI/CD | Testing'
     }
   ],
   certifications: [

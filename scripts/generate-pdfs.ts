@@ -81,11 +81,11 @@ const generateHTML = (style) => {
         <div class="contact">${header.email} • ${header.location} <br/> 🏆 ${header.certBadge}</div>
       </div>
       <div class="card full">
-        <h2>About</h2>
+        <h2>Professional Summary</h2>
         <p style="font-size: 15px; line-height: 1.6; color: #444; margin: 0;">${about}</p>
       </div>
       <div class="card full">
-        <h2>Experience</h2>
+        <h2>Work Experience</h2>
         ${experience.map(exp => `
           <div class="exp-item">
             <div style="display: flex; justify-content: space-between;">
@@ -98,7 +98,7 @@ const generateHTML = (style) => {
         `).join('')}
       </div>
       <div class="card full">
-        <h2>Open Source Contributions</h2>
+        <h2>Open Source Contributions ⭐</h2>
         ${openSource.map(os => `
           <div class="exp-item">
             <div style="display: flex; justify-content: space-between;">
@@ -112,7 +112,7 @@ const generateHTML = (style) => {
         `).join('')}
       </div>
       <div class="card" style="page-break-inside: avoid; break-inside: avoid;">
-        <h2>Skills</h2>
+        <h2>Technical Skills</h2>
         <p><strong>Functional:</strong><br/>${skills.functional}</p>
         <p><strong>Technical:</strong><br/>${skills.technical}</p>
         <p><strong>Tools:</strong><br/>${skills.tools}</p>
@@ -139,19 +139,19 @@ const generateHTML = (style) => {
       </div>
       
       <div class="section">
-        <h2>About</h2>
+        <h2>Professional Summary</h2>
         <p>${about}</p>
       </div>
 
       <div class="section">
-        <h2>Skills</h2>
+        <h2>Technical Skills</h2>
         <div><strong>Functional:</strong> ${skills.functional}</div>
         <div style="margin-top: 5px;"><strong>Technical:</strong> ${skills.technical}</div>
         <div style="margin-top: 5px;"><strong>Tools:</strong> ${skills.tools}</div>
       </div>
 
       <div class="section">
-        <h2>Experience</h2>
+        <h2>Work Experience</h2>
         ${experience.map(exp => `
           <div class="exp-item">
             <div class="role-header">
@@ -167,7 +167,7 @@ const generateHTML = (style) => {
       </div>
 
       <div class="section">
-        <h2>Open Source Contributions</h2>
+        <h2>Open Source Contributions ⭐</h2>
         ${openSource.map(os => `
           <div class="exp-item">
             <div class="role-header">
