@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { X, FileText, RefreshCw, Code2 } from 'lucide-react';
+import { X, FileText, RefreshCw, Code2, Download } from 'lucide-react';
 import { LATEX_RESUME_DATA } from '../data/latex-resume';
 import { generateLatex } from '../lib/latexGenerator';
 
@@ -13,9 +13,8 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   const [isCompiling, setIsCompiling] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  const formRef = useRef<HTMLFormElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>('');
 
   const { latex, parseError } = useMemo(() => {
     try {
@@ -26,32 +25,14 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
     }
   }, [dataStr]);
 
-  // Compile PDF in iframe by submitting a hidden form
   const compilePdf = () => {
-    if (!latex || !formRef.current || !fileInputRef.current) return;
-    
+    if (!latex) return;
     setIsCompiling(true);
     setError(null);
+    setPreviewUrl(`https://latexonline.cc/compile?text=${encodeURIComponent(latex)}`);
     
-    try {
-      // Create a File object from the LaTeX string
-      const file = new File([latex], "resume.tex", { type: "text/plain" });
-      
-      // Use DataTransfer to programmatically set the file input
-      const dataTransfer = new DataTransfer();
-      dataTransfer.items.add(file);
-      fileInputRef.current.files = dataTransfer.files;
-      
-      // Submit the form to the iframe target
-      formRef.current.submit();
-      
-      // We assume it takes a few seconds, just reset loading state after a timeout
-      // Since we can't reliably read iframe load event for cross-origin PDF
-      setTimeout(() => setIsCompiling(false), 3000);
-    } catch (err: any) {
-      setError("Failed to trigger PDF compilation.");
-      setIsCompiling(false);
-    }
+    // Reset compiling state after a short delay since iframe onload is unreliable for PDFs
+    setTimeout(() => setIsCompiling(false), 2500);
   };
 
   // Compile on initial open if valid
@@ -104,13 +85,22 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               <FileText className="w-3.5 h-3.5 text-[#38bdf8]" />
               Download .tex
             </button>
+            <a
+              href={previewUrl || (latex ? `https://latexonline.cc/compile?text=${encodeURIComponent(latex)}` : '#')}
+              target="_blank"
+              rel="noreferrer"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold text-white bg-[#0070f2] hover:bg-[#0060d0] transition-all flex items-center gap-1.5"
+            >
+              <Download className="w-3.5 h-3.5" />
+              Download PDF
+            </a>
             <button
               onClick={compilePdf}
               disabled={!!parseError || isCompiling}
-              className="px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold text-white bg-[#0070f2] hover:bg-[#0060d0] transition-all flex items-center gap-1.5 group disabled:opacity-50"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold text-[#94a3b8] hover:text-white bg-white/5 hover:bg-white/10 transition-all flex items-center gap-1.5 border border-white/10 disabled:opacity-50"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${isCompiling ? 'animate-spin' : ''}`} />
-              {isCompiling ? 'Compiling...' : 'Update PDF Preview'}
+              Update Preview
             </button>
             <div className="w-px h-6 bg-white/10 mx-1"></div>
             <button
@@ -128,17 +118,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           </div>
         )}
 
-        {/* Hidden Form for PDF Compilation via iframe (Bypasses CORS) */}
-        <form 
-          ref={formRef} 
-          target="pdf-preview-iframe" 
-          action="https://latexonline.cc/data?command=pdflatex" 
-          method="POST" 
-          encType="multipart/form-data" 
-          className="hidden"
-        >
-          <input type="file" name="file" ref={fileInputRef} />
-        </form>
+
 
         {/* Editor Body */}
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
@@ -172,7 +152,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               )}
               <iframe
                 ref={iframeRef}
-                name="pdf-preview-iframe"
+                src={previewUrl}
                 className="w-full h-full border-none"
                 title="PDF Preview"
               />
