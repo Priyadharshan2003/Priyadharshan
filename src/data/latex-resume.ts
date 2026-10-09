@@ -1,13 +1,85 @@
-export const LATEX_RESUME_DATA = {
-  header: {
+export interface PersonalInfo {
+  name: string;
+  phone: string;
+  email: string;
+  location: string;
+  linkedin: string;
+  github: string;
+}
+
+export interface Education {
+  institution: string;
+  location: string;
+  degree: string;
+  period: string;
+}
+
+export interface Experience {
+  role: string;
+  company: string;
+  location: string;
+  period: string;
+  points: string[];
+}
+
+export interface OpenSourcePR {
+  prNumber: string;
+  title: string;
+  url: string;
+  status: string;
+  contributions: string[];
+}
+
+export interface OpenSource {
+  organization: string;
+  repository: string;
+  role: string;
+  technologies?: string[];
+  pullRequests?: string;
+  mergedPRs?: string;
+  contributions?: string[];
+  prs?: OpenSourcePR[];
+}
+
+export interface Project {
+  name: string;
+  technologies: string[];
+  period: string;
+  points: string[];
+}
+
+export interface Skills {
+  languages: string;
+  frameworks: string;
+  tools: string;
+}
+
+export interface Certification {
+  year: string;
+  title: string;
+}
+
+export interface ResumeData {
+  personalInfo: PersonalInfo;
+  summary: string;
+  education: Education[];
+  experience: Experience[];
+  openSource: OpenSource[];
+  projects: Project[];
+  skills: Skills;
+  certifications: Certification[];
+}
+
+export const resumeData: ResumeData = {
+  personalInfo: {
     name: 'Priyadharshan Chandranath',
-    phone: '+91-XXXXXXXXXX',
+    phone: '+91-9442876978',
     email: 'priyadharshanchandranath@gmail.com',
     location: 'Salem, Tamil Nadu, India',
     linkedin: 'linkedin.com/in/priyadharshan',
     github: 'github.com/Priyadharshan2003'
   },
-  about: `Senior Analyst with expertise in SAP UI5/FIORI development and a strong foundation in front-end technologies. Specialized in building enterprise-grade applications using SAPUI5, FIORI Elements, and OData services.`,
+  summary: `Senior Analyst with expertise in SAP UI5/FIORI development and a strong foundation in front-end technologies. Specialized in building enterprise-grade applications using SAPUI5, FIORI Elements, and OData services.`,
   education: [
     {
       institution: 'Sona College of Technology',
@@ -78,7 +150,7 @@ export const LATEX_RESUME_DATA = {
     tools: 'Git, SAP BAS, VS Code, GitHub Actions, SAP BTP'
   },
   certifications: [
-    { year: '2026', title: 'Capgemini OCEAN Certified L1 - Application Developer - SAP - FIORI' },
+    { year: '2026', title: 'SAP Certified - Generative AI Developer' },
     { year: '2025', title: 'SAP Certified - Backend Developer - SAP Cloud Application Programming Model' }
   ]
 };

@@ -10,7 +10,7 @@ import { OpenSource } from './components/OpenSource';
 import { Certifications } from './components/Certifications';
 import { Education } from './components/Education';
 import { ContactFooter } from './components/ContactFooter';
-import { ResumeModal } from './components/ResumeModal';
+import ResumeGeneratorModal from './components/ResumeGeneratorModal';
 import { Cursor } from '@/components/ui/inverted-cursor';
 
 export function App() {
@@ -45,7 +45,7 @@ export function App() {
       <ContactFooter onOpenResume={() => setIsResumeOpen(true)} />
 
       {/* Interactive Resume View/Download Modal */}
-      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
+      <ResumeGeneratorModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
     </div>
   );
 }
