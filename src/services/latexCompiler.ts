@@ -3,7 +3,7 @@ export interface CompilerResponse {
   error?: string;
 }
 
-const TEXLIVE_API_URL = 'https://texlive.net/cgi-bin/latexcgi';
+const TEXLIVE_API_URL = '/api/compile';
 
 /**
  * Compiles LaTeX source code to a PDF using texlive.net API.

@@ -11,5 +11,14 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname, './src'),
     },
   },
+  server: {
+    proxy: {
+      '/api/compile': {
+        target: 'https://texlive.net/cgi-bin/latexcgi',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/compile/, ''),
+      }
+    }
+  }
 })
 
