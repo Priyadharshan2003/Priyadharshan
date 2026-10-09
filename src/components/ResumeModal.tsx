@@ -132,6 +132,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           target="pdf-preview-iframe" 
           action="https://texlive.net/cgi-bin/latexcgi" 
           method="POST" 
+          encType="multipart/form-data"
           className="hidden"
         >
           <input type="hidden" name="filename[]" value="resume.tex" />
@@ -145,6 +146,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           target="_blank" 
           action="https://texlive.net/cgi-bin/latexcgi" 
           method="POST" 
+          encType="multipart/form-data"
           className="hidden"
         >
           <input type="hidden" name="filename[]" value="resume.tex" />
