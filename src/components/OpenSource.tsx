@@ -1,5 +1,6 @@
 import React from 'react';
-import { Github, Code2, CheckCircle, ExternalLink } from 'lucide-react';
+import { Code2, CheckCircle, ExternalLink } from 'lucide-react';
+import { GithubIcon } from './Icons';
 
 export const OpenSource: React.FC = () => {
   return (
@@ -9,7 +10,7 @@ export const OpenSource: React.FC = () => {
         {/* Header */}
         <div className="max-w-3xl mb-14">
           <div className="text-xs font-mono font-semibold uppercase tracking-widest text-[#38bdf8] mb-1 flex items-center gap-2">
-            <Github className="w-4 h-4 text-[#0070f2]" />
+            <GithubIcon className="w-4 h-4 text-[#0070f2]" />
             Open Source
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center gap-3">
