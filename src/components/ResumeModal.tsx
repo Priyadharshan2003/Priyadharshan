@@ -14,9 +14,9 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   const [error, setError] = useState<string | null>(null);
   
   const formRef = useRef<HTMLFormElement>(null);
-  const fileInputRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const downloadFormRef = useRef<HTMLFormElement>(null);
-  const downloadInputRef = useRef<HTMLTextAreaElement>(null);
+  const downloadInputRef = useRef<HTMLInputElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const { latex, parseError } = useMemo(() => {
@@ -33,8 +33,17 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
     setIsCompiling(true);
     setError(null);
     
-    fileInputRef.current.value = latex;
-    formRef.current.submit();
+    try {
+      const file = new File([latex], "resume.tex", { type: "text/plain" });
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      fileInputRef.current.files = dataTransfer.files;
+      
+      formRef.current.submit();
+    } catch (err) {
+      console.error(err);
+      setError("Failed to generate PDF. Browser does not support this feature.");
+    }
     
     // Reset compiling state after a short delay
     setTimeout(() => setIsCompiling(false), 2500);
@@ -42,8 +51,17 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
 
   const downloadPdf = () => {
     if (!latex || !downloadFormRef.current || !downloadInputRef.current) return;
-    downloadInputRef.current.value = latex;
-    downloadFormRef.current.submit();
+    try {
+      const file = new File([latex], "resume.tex", { type: "text/plain" });
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      downloadInputRef.current.files = dataTransfer.files;
+      
+      downloadFormRef.current.submit();
+    } catch (err) {
+      console.error(err);
+      setError("Failed to download PDF.");
+    }
   };
 
   // Compile on initial open if valid
@@ -138,7 +156,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           <input type="hidden" name="filename[]" value="resume.tex" />
           <input type="hidden" name="engine" value="pdflatex" />
           <input type="hidden" name="return" value="pdf" />
-          <textarea name="filecontents[]" ref={fileInputRef} readOnly />
+          <input type="file" name="filecontents[]" ref={fileInputRef} />
         </form>
 
         <form 
@@ -152,7 +170,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           <input type="hidden" name="filename[]" value="resume.tex" />
           <input type="hidden" name="engine" value="pdflatex" />
           <input type="hidden" name="return" value="pdf" />
-          <textarea name="filecontents[]" ref={downloadInputRef} readOnly />
+          <input type="file" name="filecontents[]" ref={downloadInputRef} />
         </form>
         {/* Editor Body */}
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
