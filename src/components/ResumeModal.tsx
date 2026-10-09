@@ -13,8 +13,11 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   const [isCompiling, setIsCompiling] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
+  const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLTextAreaElement>(null);
+  const downloadFormRef = useRef<HTMLFormElement>(null);
+  const downloadInputRef = useRef<HTMLTextAreaElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>('');
 
   const { latex, parseError } = useMemo(() => {
     try {
@@ -26,13 +29,21 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   }, [dataStr]);
 
   const compilePdf = () => {
-    if (!latex) return;
+    if (!latex || !formRef.current || !fileInputRef.current) return;
     setIsCompiling(true);
     setError(null);
-    setPreviewUrl(`https://latexonline.cc/compile?text=${encodeURIComponent(latex)}`);
     
-    // Reset compiling state after a short delay since iframe onload is unreliable for PDFs
+    fileInputRef.current.value = latex;
+    formRef.current.submit();
+    
+    // Reset compiling state after a short delay
     setTimeout(() => setIsCompiling(false), 2500);
+  };
+
+  const downloadPdf = () => {
+    if (!latex || !downloadFormRef.current || !downloadInputRef.current) return;
+    downloadInputRef.current.value = latex;
+    downloadFormRef.current.submit();
   };
 
   // Compile on initial open if valid
@@ -85,15 +96,14 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               <FileText className="w-3.5 h-3.5 text-[#38bdf8]" />
               Download .tex
             </button>
-            <a
-              href={previewUrl || (latex ? `https://latexonline.cc/compile?text=${encodeURIComponent(latex)}` : '#')}
-              target="_blank"
-              rel="noreferrer"
-              className="px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold text-white bg-[#0070f2] hover:bg-[#0060d0] transition-all flex items-center gap-1.5"
+            <button
+              onClick={downloadPdf}
+              disabled={!!parseError}
+              className="px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold text-white bg-[#0070f2] hover:bg-[#0060d0] transition-all flex items-center gap-1.5 disabled:opacity-50"
             >
               <Download className="w-3.5 h-3.5" />
               Download PDF
-            </a>
+            </button>
             <button
               onClick={compilePdf}
               disabled={!!parseError || isCompiling}
@@ -116,10 +126,32 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           <div className="bg-red-500/10 border-b border-red-500/20 text-red-400 px-6 py-2 text-xs font-mono flex items-center gap-2">
             <span>{error}</span>
           </div>
-        )}
+        )}        {/* Hidden Forms for texlive.net API */}
+        <form 
+          ref={formRef} 
+          target="pdf-preview-iframe" 
+          action="https://texlive.net/cgi-bin/latexcgi" 
+          method="POST" 
+          className="hidden"
+        >
+          <input type="hidden" name="filename[]" value="resume.tex" />
+          <input type="hidden" name="engine" value="pdflatex" />
+          <input type="hidden" name="return" value="pdf" />
+          <textarea name="filecontents[]" ref={fileInputRef} readOnly />
+        </form>
 
-
-
+        <form 
+          ref={downloadFormRef} 
+          target="_blank" 
+          action="https://texlive.net/cgi-bin/latexcgi" 
+          method="POST" 
+          className="hidden"
+        >
+          <input type="hidden" name="filename[]" value="resume.tex" />
+          <input type="hidden" name="engine" value="pdflatex" />
+          <input type="hidden" name="return" value="pdf" />
+          <textarea name="filecontents[]" ref={downloadInputRef} readOnly />
+        </form>
         {/* Editor Body */}
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
           {/* Left Column: JSON Editor */}
@@ -152,7 +184,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               )}
               <iframe
                 ref={iframeRef}
-                src={previewUrl}
+                name="pdf-preview-iframe"
                 className="w-full h-full border-none"
                 title="PDF Preview"
               />
