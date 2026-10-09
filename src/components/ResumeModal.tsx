@@ -132,7 +132,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
         <form 
           ref={formRef} 
           target="pdf-preview-iframe" 
-          action="https://latexonline.cc/compile?command=pdflatex" 
+          action="https://latexonline.cc/data?command=pdflatex" 
           method="POST" 
           encType="multipart/form-data" 
           className="hidden"
