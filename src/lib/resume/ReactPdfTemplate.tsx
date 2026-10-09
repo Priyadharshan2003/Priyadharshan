@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 24,
-    fontFamily: 'Times-Bold',
+    fontFamily: 'Times-Roman',
+    fontWeight: 'bold',
     textTransform: 'uppercase',
     marginBottom: 2
   },
@@ -38,7 +39,8 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 14,
-    fontFamily: 'Times-Bold',
+    fontFamily: 'Times-Roman',
+    fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   itemContainer: {
@@ -51,7 +53,8 @@ const styles = StyleSheet.create({
     marginBottom: 1
   },
   itemTitle: {
-    fontFamily: 'Times-Bold',
+    fontFamily: 'Times-Roman',
+    fontWeight: 'bold',
     fontSize: 11
   },
   itemLocation: {
@@ -65,11 +68,13 @@ const styles = StyleSheet.create({
     marginBottom: 2
   },
   itemSubtitle: {
-    fontFamily: 'Times-Italic',
+    fontFamily: 'Times-Roman',
+    fontStyle: 'italic',
     fontSize: 10
   },
   itemPeriod: {
-    fontFamily: 'Times-Italic',
+    fontFamily: 'Times-Roman',
+    fontStyle: 'italic',
     fontSize: 10
   },
   bulletList: {
@@ -89,7 +94,8 @@ const styles = StyleSheet.create({
     fontSize: 10
   },
   boldText: {
-    fontFamily: 'Times-Bold'
+    fontFamily: 'Times-Roman',
+    fontWeight: 'bold'
   }
 });
 
