@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { X, Download, FileText, RefreshCw, Code2 } from 'lucide-react';
 import { LATEX_RESUME_DATA } from '../data/latex-resume';
 import { generateLatex } from '../lib/latexGenerator';
@@ -12,6 +12,10 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
   const [dataStr, setDataStr] = useState(() => JSON.stringify(LATEX_RESUME_DATA, null, 2));
   const [isCompiling, setIsCompiling] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const { latex, parseError } = useMemo(() => {
     try {
@@ -22,6 +26,44 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
     }
   }, [dataStr]);
 
+  // Compile PDF in iframe by submitting a hidden form
+  const compilePdf = () => {
+    if (!latex || !formRef.current || !fileInputRef.current) return;
+    
+    setIsCompiling(true);
+    setError(null);
+    
+    try {
+      // Create a File object from the LaTeX string
+      const file = new File([latex], "resume.tex", { type: "text/plain" });
+      
+      // Use DataTransfer to programmatically set the file input
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      fileInputRef.current.files = dataTransfer.files;
+      
+      // Submit the form to the iframe target
+      formRef.current.submit();
+      
+      // We assume it takes a few seconds, just reset loading state after a timeout
+      // Since we can't reliably read iframe load event for cross-origin PDF
+      setTimeout(() => setIsCompiling(false), 3000);
+    } catch (err: any) {
+      setError("Failed to trigger PDF compilation.");
+      setIsCompiling(false);
+    }
+  };
+
+  // Compile on initial open if valid
+  useEffect(() => {
+    if (isOpen && latex && !parseError) {
+      const timer = setTimeout(() => {
+        compilePdf();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleDownloadTex = () => {
@@ -30,40 +72,9 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'resume.tex';
+    a.download = 'Priyadharshan_Resume.tex';
     a.click();
     URL.revokeObjectURL(url);
-  };
-
-  const handleDownloadPdf = async () => {
-    if (!latex) return;
-    setIsCompiling(true);
-    setError(null);
-    try {
-      const response = await fetch('https://latexonline.cc/compile?command=pdflatex', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plain',
-        },
-        body: latex,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to compile LaTeX to PDF. Please check syntax.');
-      }
-
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'resume.pdf';
-      a.click();
-      URL.revokeObjectURL(url);
-    } catch (e: any) {
-      setError(e.message || 'Error compiling PDF.');
-    } finally {
-      setIsCompiling(false);
-    }
   };
 
   return (
@@ -94,12 +105,12 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               Download .tex
             </button>
             <button
-              onClick={handleDownloadPdf}
+              onClick={compilePdf}
               disabled={!!parseError || isCompiling}
               className="px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold text-white bg-[#0070f2] hover:bg-[#0060d0] transition-all flex items-center gap-1.5 group disabled:opacity-50"
             >
-              {isCompiling ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-              {isCompiling ? 'Compiling PDF...' : 'Generate & Download PDF'}
+              <RefreshCw className={`w-3.5 h-3.5 ${isCompiling ? 'animate-spin' : ''}`} />
+              {isCompiling ? 'Compiling...' : 'Update PDF Preview'}
             </button>
             <div className="w-px h-6 bg-white/10 mx-1"></div>
             <button
@@ -117,13 +128,25 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
           </div>
         )}
 
+        {/* Hidden Form for PDF Compilation via iframe (Bypasses CORS) */}
+        <form 
+          ref={formRef} 
+          target="pdf-preview-iframe" 
+          action="https://latexonline.cc/compile?command=pdflatex" 
+          method="POST" 
+          encType="multipart/form-data" 
+          className="hidden"
+        >
+          <input type="file" name="file" ref={fileInputRef} />
+        </form>
+
         {/* Editor Body */}
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
           {/* Left Column: JSON Editor */}
-          <div className="w-full md:w-1/2 border-r border-white/10 flex flex-col bg-[#07090e]">
+          <div className="w-full md:w-1/3 border-r border-white/10 flex flex-col bg-[#07090e]">
             <div className="px-4 py-2 bg-[#0f121a] border-b border-white/5 text-xs font-mono text-[#94a3b8] flex justify-between items-center">
               <span>RESUME DATA (JSON)</span>
-              {parseError && <span className="text-red-400">Invalid JSON: {parseError}</span>}
+              {parseError && <span className="text-red-400">Invalid JSON</span>}
             </div>
             <textarea
               className="flex-1 w-full p-4 bg-transparent text-[#e2e8f0] font-mono text-xs resize-none focus:outline-none leading-relaxed"
@@ -133,15 +156,26 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
             />
           </div>
 
-          {/* Right Column: LaTeX Preview */}
-          <div className="w-full md:w-1/2 flex flex-col bg-[#07090e]">
-            <div className="px-4 py-2 bg-[#0f121a] border-b border-white/5 text-xs font-mono text-[#94a3b8]">
-              LIVE LATEX PREVIEW (JAKE GUTIERREZ TEMPLATE)
+          {/* Right Column: Live PDF Preview */}
+          <div className="w-full md:w-2/3 flex flex-col bg-[#141824] relative">
+            <div className="px-4 py-2 bg-[#0f121a] border-b border-white/5 text-xs font-mono text-[#94a3b8] flex justify-between items-center">
+              <span>LIVE PDF PREVIEW</span>
+              <span className="text-[#64748b]">Powered by latexonline.cc</span>
             </div>
-            <div className="flex-1 overflow-auto p-4">
-              <pre className="text-[#38bdf8] font-mono text-xs whitespace-pre-wrap leading-relaxed">
-                {latex || 'Fix JSON errors to see the preview.'}
-              </pre>
+            <div className="flex-1 bg-white relative">
+              {isCompiling && (
+                <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center z-10 text-slate-800">
+                  <RefreshCw className="w-8 h-8 animate-spin text-[#0070f2] mb-3" />
+                  <p className="font-mono text-sm font-semibold">Compiling LaTeX...</p>
+                  <p className="text-xs text-slate-500 mt-1">This usually takes 2-4 seconds.</p>
+                </div>
+              )}
+              <iframe
+                ref={iframeRef}
+                name="pdf-preview-iframe"
+                className="w-full h-full border-none"
+                title="PDF Preview"
+              />
             </div>
           </div>
         </div>
