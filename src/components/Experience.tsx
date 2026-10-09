@@ -8,7 +8,7 @@ interface ExperienceItem {
   period: string;
   type: string;
   summary: string;
-  achievements: string[];
+  achievements: (string | React.ReactNode)[];
   techStack: string[];
 }
 
@@ -24,7 +24,11 @@ const EXPERIENCES: ExperienceItem[] = [
       'Implemented merchant-specific authorization timeout support in the Agent Pay SDK and MCP integration.',
       'Added validation rules for configurable timeout ranges (10 to 86,400 seconds), reusable timeout handling utilities, automated test coverage, and documentation updates.',
       'Worked through the complete open-source contribution lifecycle including issue analysis, implementation, code review, CI/CD validation, maintainer approval, and production release.',
-      'Contributions were merged into the main branch and included in official releases: PR #21 and PR #29.'
+      <span key="prs">
+        Contributions were merged into the main branch and included in official releases:{' '}
+        <a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/21" target="_blank" rel="noreferrer" className="text-[#38bdf8] hover:underline">PR #21</a> and{' '}
+        <a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/29" target="_blank" rel="noreferrer" className="text-[#38bdf8] hover:underline">PR #29</a>.
+      </span>
     ],
     techStack: ['TypeScript', 'Node.js', 'Git', 'GitHub', 'CI/CD', 'Unit Testing']
   },
