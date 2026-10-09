@@ -14,11 +14,15 @@ if (!fs.existsSync(OUTPUT_DIR)) {
 }
 
 const generateHTML = (style) => {
-  const { header, about, skills, experience, certifications, education } = RESUME_DATA;
+  const { header, about, skills, experience, openSource, certifications, education } = RESUME_DATA;
 
   const baseCSS = `
     * { box-sizing: border-box; }
     body { margin: 0; padding: 0; }
+    a { text-decoration: none; color: #464feb; }
+    table { border-collapse: collapse; width: 100%; margin-top: 8px; }
+    tr th, tr td { border: 1px solid #e6e6e6; padding: 6px; text-align: left; }
+    tr th { background-color: #f5f5f5; }
   `;
 
   let styleCSS = '';
@@ -93,6 +97,20 @@ const generateHTML = (style) => {
           </div>
         `).join('')}
       </div>
+      <div class="card full">
+        <h2>Open Source Contributions</h2>
+        ${openSource.map(os => `
+          <div class="exp-item">
+            <div style="display: flex; justify-content: space-between;">
+              <span class="role-title">${os.role}</span>
+              <span style="color: #888; font-size: 13px;">${os.period}</span>
+            </div>
+            <div class="company">${os.project}</div>
+            <ul>${os.points.map(p => `<li>${p}</li>`).join('')}</ul>
+            <div style="margin-top: 8px; font-size: 13px;"><strong>Technologies:</strong> ${os.technologies}</div>
+          </div>
+        `).join('')}
+      </div>
       <div class="card" style="page-break-inside: avoid; break-inside: avoid;">
         <h2>Skills</h2>
         <p><strong>Functional:</strong><br/>${skills.functional}</p>
@@ -144,6 +162,23 @@ const generateHTML = (style) => {
             <ul>
               ${exp.points.map(p => `<li>${p}</li>`).join('')}
             </ul>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="section">
+        <h2>Open Source Contributions</h2>
+        ${openSource.map(os => `
+          <div class="exp-item">
+            <div class="role-header">
+              <span class="role-title">${os.role}</span>
+              <span>${os.period}</span>
+            </div>
+            <div class="company">${os.project}</div>
+            <ul>
+              ${os.points.map(p => `<li>${p}</li>`).join('')}
+            </ul>
+            <div style="margin-top: 5px;"><strong>Technologies:</strong> ${os.technologies}</div>
           </div>
         `).join('')}
       </div>

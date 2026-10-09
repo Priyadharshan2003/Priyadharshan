@@ -14,6 +14,21 @@ interface ExperienceItem {
 
 const EXPERIENCES: ExperienceItem[] = [
   {
+    role: 'Open Source Contributor',
+    company: 'DeepFirstHQ',
+    location: 'Open Source',
+    period: '2026',
+    type: 'Open Source',
+    summary: 'Successfully delivered and merged two feature contributions to DeepFirstHQ\'s payment authorization ecosystem.',
+    achievements: [
+      'Implemented merchant-specific authorization timeout support in the Agent Pay SDK and MCP integration.',
+      'Added validation rules for configurable timeout ranges (10 to 86,400 seconds), reusable timeout handling utilities, automated test coverage, and documentation updates.',
+      'Worked through the complete open-source contribution lifecycle including issue analysis, implementation, code review, CI/CD validation, maintainer approval, and production release.',
+      'Contributions were merged into the main branch and included in official releases: PR #21 and PR #29.'
+    ],
+    techStack: ['TypeScript', 'Node.js', 'Git', 'GitHub', 'CI/CD', 'Unit Testing']
+  },
+  {
     role: 'Senior Analyst (A5) — SAP Consulting',
     company: 'Capgemini',
     location: 'IT Services – SAP Consulting',

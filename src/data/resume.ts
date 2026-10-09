@@ -67,6 +67,25 @@ export const RESUME_DATA = {
       ]
     }
   ],
+  openSource: [
+    {
+      role: 'Open Source Contributor',
+      project: 'DeepFirstHQ (deepfirstsearch)',
+      period: '2026',
+      points: [
+        'Contributed and merged 2 feature enhancements into the DeepFirstHQ deepfirstsearch open-source project. Implemented merchant-specific authorization timeout support in the Agent Pay SDK and MCP integration.',
+        'Added validation rules for configurable timeout ranges (10 to 86,400 seconds), reusable timeout handling utilities, automated test coverage, and documentation updates.',
+        'Worked through the complete open-source contribution lifecycle including issue analysis, implementation, code review, CI/CD validation, maintainer approval, and production release.',
+        `Contributions were merged into the main branch and included in official releases:
+        <table>
+          <tr><th>PR</th><th>Description</th></tr>
+          <tr><td><a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/21">#21</a></td><td>feat(sdk): add merchant-specific maxTimeoutSeconds support</td></tr>
+          <tr><td><a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/29">#29</a></td><td>feat(mcp): support merchant-specific authorization timeouts</td></tr>
+        </table>`
+      ],
+      technologies: 'TypeScript, Node.js, Git, GitHub, CI/CD, Unit Testing, Open Source Development'
+    }
+  ],
   certifications: [
     { year: '2026', title: 'Capgemini OCEAN Certified L1 - Application Developer - SAP - FIORI' },
     { year: '2026', title: 'Capgemini L2 Industry Certification - Tech & Digital' },
