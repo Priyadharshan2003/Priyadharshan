@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { X, Download, FileText, RefreshCw, Code2 } from 'lucide-react';
+import { X, FileText, RefreshCw, Code2 } from 'lucide-react';
 import { LATEX_RESUME_DATA } from '../data/latex-resume';
 import { generateLatex } from '../lib/latexGenerator';
 
