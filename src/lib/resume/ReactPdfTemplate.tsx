@@ -2,14 +2,6 @@ import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Link, Font } from '@react-pdf/renderer';
 import type { ResumeData } from '../../data/latex-resume';
 
-// Try to use standard PDF fonts if possible, or register standard open-source fonts for the Jake Gutierrez ATS look
-Font.register({
-  family: 'Times',
-  fonts: [
-    { src: 'https://fonts.gstatic.com/s/timesnewroman/v11/TimesNewRoman.ttf' },
-  ]
-});
-
 const styles = StyleSheet.create({
   page: {
     padding: 30,
