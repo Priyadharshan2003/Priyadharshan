@@ -6,6 +6,7 @@ import { AgenticAiSection } from './components/AgenticAiSection';
 import { Projects } from './components/Projects';
 import { SapEcosystemSection } from './components/SapEcosystemSection';
 import { Experience } from './components/Experience';
+import { OpenSource } from './components/OpenSource';
 import { Certifications } from './components/Certifications';
 import { Education } from './components/Education';
 import { ContactFooter } from './components/ContactFooter';
@@ -35,6 +36,7 @@ export function App() {
         <Projects />
         <SapEcosystemSection />
         <Experience />
+        <OpenSource />
         <Certifications />
         <Education />
       </main>

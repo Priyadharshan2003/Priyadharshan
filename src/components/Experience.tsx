@@ -14,26 +14,6 @@ interface ExperienceItem {
 
 const EXPERIENCES: ExperienceItem[] = [
   {
-    role: 'Open Source Contributor',
-    company: 'DeepFirstHQ',
-    location: 'Open Source',
-    period: '2026',
-    type: 'Open Source',
-    summary: 'Successfully delivered and merged two feature contributions to DeepFirstHQ\'s payment authorization ecosystem.',
-    achievements: [
-      'Merged 2 feature contributions into the DeepFirstHQ open-source payment infrastructure platform.',
-      'Implemented merchant-specific authorization timeout support across SDK and MCP components.',
-      'Added validation, automated tests, documentation, and integration enhancements.',
-      'Collaborated with maintainers through code reviews and CI/CD pipelines to deliver production-ready releases.',
-      <span key="prs">
-        Contributions shipped in official releases:<br/>
-        &nbsp;&nbsp;- <a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/21" target="_blank" rel="noreferrer" className="text-[#38bdf8] hover:underline">PR #21</a>: SDK support for merchant-specific maxTimeoutSeconds<br/>
-        &nbsp;&nbsp;- <a href="https://github.com/DeepFirstHQ/deepfirstsearch/pull/29" target="_blank" rel="noreferrer" className="text-[#38bdf8] hover:underline">PR #29</a>: MCP integration for merchant-specific authorization timeouts
-      </span>
-    ],
-    techStack: ['TypeScript', 'Node.js', 'GitHub', 'CI/CD', 'Testing']
-  },
-  {
     role: 'Senior Analyst (A5) — SAP Consulting',
     company: 'Capgemini',
     location: 'IT Services – SAP Consulting',
